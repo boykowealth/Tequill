@@ -1,3 +1,5 @@
+![Tequill](image.png)
+
 # Welcome To Tequill
 
 **Tequill** is a desktop-based markdown notebook engineered for professionals in quantitative finance, academia, and technical fields. Built with PySide6 and QtWebEngine, it combines structured writing, math rendering, and clean exporting, all in one local-first interface. With full Markdown and LaTeX support, Tequill is ideal for research notes, whitepaper drafting, strategy documentation, and reproducible thought capture.
