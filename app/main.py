@@ -282,6 +282,7 @@ class NotebookWidget(QMainWindow):
 
 
 if __name__ == "__main__":
+    print("Running instance 1.1 of Tequill, please wait for the display window to appear...")
     app = QApplication(sys.argv)
     window = NotebookWidget()
     window.show()
