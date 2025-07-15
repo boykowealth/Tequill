@@ -13,6 +13,7 @@ import sys
 from style import light_mode
 from session import NotebookSession
 from manager import NotebookManager
+from text import SmartTextEdit
 
 class NotebookWidget(QMainWindow):
     def __init__(self):
@@ -29,7 +30,7 @@ class NotebookWidget(QMainWindow):
         self.setCentralWidget(central)
 
         self.list = QListWidget()
-        self.editor = QTextEdit()
+        self.editor = SmartTextEdit()
         self.viewer = QWebEngineView()
 
         ## Left panel (notebook list)

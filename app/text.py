@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import QTextEdit
-from PySide6.QtGui import QKeyEvent
+from PySide6.QtGui import QKeyEvent, QTextCursor
 from PySide6.QtCore import Qt
 
-class AutoCloseTextEdit(QTextEdit):
+
+class SmartTextEdit(QTextEdit):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.pairs = {
@@ -10,7 +11,10 @@ class AutoCloseTextEdit(QTextEdit):
             '[': ']',
             '{': '}',
             '"': '"',
-            "'": "'"
+            "'": "'",
+            '*': '*',
+            '_': '_',
+            '`': '`'
         }
 
     def keyPressEvent(self, event: QKeyEvent):
@@ -18,17 +22,14 @@ class AutoCloseTextEdit(QTextEdit):
         cursor = self.textCursor()
 
         if key in self.pairs:
-            closing_char = self.pairs[key]
-            cursor.insertText(key + closing_char)
-            cursor.movePosition(cursor.Left)
-            self.setTextCursor(cursor)
-        elif key in self.pairs.values():
-            # Optional: skip over the closing character if it's already there
-            next_char = self.toPlainText()[cursor.position():cursor.position() + 1]
-            if next_char == key:
-                cursor.movePosition(cursor.Right)
-                self.setTextCursor(cursor)
+            closing = self.pairs[key]
+            if cursor.hasSelection():
+                selected = cursor.selectedText()
+                cursor.insertText(f"{key}{selected}{closing}")
             else:
-                super().keyPressEvent(event)
-        else:
-            super().keyPressEvent(event)
+                cursor.insertText(f"{key}{closing}")
+                cursor.movePosition(QTextCursor.Left)
+                self.setTextCursor(cursor)
+            return
+
+        super().keyPressEvent(event)
