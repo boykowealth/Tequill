@@ -35,6 +35,7 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon-x11-0 \
     libxcb-cursor0 \
     libnss3\
+    libasound2\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
