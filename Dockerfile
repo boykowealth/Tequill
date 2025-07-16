@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     libxcb-xkb1 \
     libxkbcommon-x11-0 \
     libxcb-cursor0 \
+    libnss3\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
