@@ -1,4 +1,4 @@
-FROM linuxserver/ubuntu-desktop
+FROM dorowu/ubuntu-desktop-lxde-vnc:focal
 
 ENV DEBIAN_FRONTEND=noninteractive
 
