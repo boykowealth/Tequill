@@ -35,9 +35,11 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     libcups2 \
     libsm6 \
+    libxkbcommon0 \
     wget \
-    x11-xserver-utils && \
-    rm -rf /var/lib/apt/lists/*
+    x11-xserver-utils \
+    && rm -rf /var/lib/apt/lists/*
+
 
 ENV QT_QPA_PLATFORM=xcb
 
