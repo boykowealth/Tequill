@@ -1,58 +1,56 @@
-FROM dorowu/ubuntu-desktop-lxde-vnc:focal
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DISPLAY=:1
 
 RUN apt-get update && apt-get install -y \
-    python3 python3-pip \
+    python3 \
+    python3-pip \
+    xvfb \
+    x11vnc \
+    novnc \
+    fluxbox \
+    supervisor \
+    net-tools \
+    wget \
+    curl \
+    libgl1 \
+    libegl1 \
     libgl1-mesa-glx \
-    libegl1-mesa \
-    libxcb1 \
-    libx11-xcb1 \
-    libxcb-glx0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libgbm1 \
-    libnss3 \
-    libasound2 \
-    libxshmfence1 \
-    libxfixes3 \
-    libxkbcommon0 \
-    libxkbcommon-x11-0 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libfontconfig1 \
-    libcups2 \
-    libsm6 \
-    libxrender1 \
-    libxext6 \
-    libglu1-mesa \
     libglib2.0-0 \
-    libqt5gui5 \
-    libqt5core5a \
-    libqt5dbus5 \
-    libqt5network5 \
-    libqt5widgets5 \
-    qt5-gtk-platformtheme \
-    fonts-dejavu-core \
-    fontconfig \
+    libxkbcommon0 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcb-glx0 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-randr0 \
+    libxcb-render-util0 \
+    libxcb-shape0 \
+    libxcb-sync1 \
+    libxcb-xfixes0 \
+    libxcb-xinerama0 \
+    libxcb-xkb1 \
+    libxkbcommon-x11-0 \
+    libxcb-cursor0 \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --no-cache-dir --upgrade pip
-RUN pip3 install --no-cache-dir "PySide6==6.5.2" markdown2
-
-ENV QT_X11_NO_MITSHM=1
-ENV QT_SCALE_FACTOR=1
-ENV QT_AUTO_SCREEN_SCALE_FACTOR=0
-ENV QT_SCREEN_SCALE_FACTORS=1
-ENV QT_QPA_PLATFORM=xcb
+RUN pip3 install --no-cache-dir \
+    markdown2 \
+    PySide6
 
 WORKDIR /app
 
-COPY . /app
+COPY . /app/
 
+RUN sed -i 's/\r$//' /app/start.sh
 RUN chmod +x /app/start.sh
 
-EXPOSE 80 5901
+RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
 
-CMD ["/app/start.sh"]
+EXPOSE 8080
+
+# Start using supervisord
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

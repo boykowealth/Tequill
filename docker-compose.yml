@@ -1,19 +1,10 @@
-version: "3.8"
+version: '3'
 
 services:
-  tequill:
-    build: .
+  webapp:
+    build: 
+      context: .
+    container_name: python-vnc-app
     ports:
-      - "6080:80"
-      - "5901:5901"
-    volumes:
-      - .:/app
-    environment:
-      - DISPLAY=:1
-      - QT_X11_NO_MITSHM=1
-      - QT_QPA_PLATFORM=xcb
-      - QT_SCALE_FACTOR=1
-      - QT_AUTO_SCREEN_SCALE_FACTOR=0
-    security_opt:
-      - seccomp:unconfined
-    shm_size: '2gb'
+      - "8080:8080" 
+    restart: unless-stopped
