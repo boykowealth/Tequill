@@ -17,6 +17,9 @@ RUN apt-get update && apt-get install -y \
     libgl1 \
     libegl1 \
     libgl1-mesa-glx \
+    libgl1-mesa-dri \
+    libegl1-mesa \
+    libosmesa6 \
     libglib2.0-0 \
     libxkbcommon0 \
     libx11-xcb1 \
@@ -34,8 +37,8 @@ RUN apt-get update && apt-get install -y \
     libxcb-xkb1 \
     libxkbcommon-x11-0 \
     libxcb-cursor0 \
-    libnss3\
-    libasound2\
+    libnss3 \
+    libasound2 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -43,8 +46,12 @@ RUN pip3 install --no-cache-dir \
     markdown2 \
     PySide6
 
-WORKDIR /app
+ENV QTWEBENGINE_DISABLE_SANDBOX=1
+ENV QTWEBENGINE_DISABLE_GPU=1
+ENV QT_QUICK_BACKEND=software
+ENV QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox --disable-gpu --disable-software-rasterizer"
 
+WORKDIR /app
 COPY . /app/
 
 RUN sed -i 's/\r$//' /app/start.sh
@@ -55,4 +62,3 @@ RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
 EXPOSE 8080
 
 CMD ["./start.sh"]
-
