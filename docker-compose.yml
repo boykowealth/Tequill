@@ -1,10 +1,16 @@
-version: '3'
+version: "3.8"
 
 services:
-  webapp:
-    build: 
+  tequill-app:
+    build:
       context: .
-    container_name: python-vnc-app
+      dockerfile: Dockerfile
+    container_name: tequill-container
+    environment:
+      - DISPLAY=:1
+      - QT_QPA_PLATFORM_PLUGIN_PATH=/usr/lib/qt6/plugins/platforms
     ports:
-      - "8080:8080" 
+      - "8080:8080"
+    volumes:
+      - .:/app
     restart: unless-stopped
