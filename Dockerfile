@@ -52,5 +52,5 @@ RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
 
 EXPOSE 8080
 
-# Start using supervisord
-CMD ["start.sh"]
+CMD ["./start.sh"]
+
