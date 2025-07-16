@@ -13,6 +13,6 @@ sleep 2
 
 x11vnc -display :1 -nopw -forever -shared &
 
-/opt/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 8080 &
+/opt/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 0.0.0.0 --web /opt/novnc &
 
 python3 /app/app/main.py
