@@ -15,8 +15,25 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          
-      - name: Build and push Docker image
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: boykowealth/tequill:latest
+
+      - name: Test container responds on port 8080
+        run: |
+          docker run -d -p 8080:8080 --name test-tequill boykowealth/tequill:latest
+          echo "Waiting for container to start..."
+          sleep 15
+          echo "Testing http://localhost:8080/vnc.html"
+          curl -f http://localhost:8080/vnc.html || (docker logs test-tequill && exit 1)
+          docker rm -f test-tequill
+
+      - name: Push Docker image (after passing test)
         uses: docker/build-push-action@v5
         with:
           context: .
