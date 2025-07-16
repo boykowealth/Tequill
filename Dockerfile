@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:1
 
 RUN apt-get update && apt-get install -y \
+    git \
     python3 \
     python3-pip \
     xvfb \
@@ -39,6 +40,7 @@ RUN apt-get update && apt-get install -y \
     libxcb-cursor0 \
     libnss3 \
     libasound2 \
+    ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -51,11 +53,13 @@ ENV QTWEBENGINE_DISABLE_GPU=1
 ENV QT_QUICK_BACKEND=software
 ENV QTWEBENGINE_CHROMIUM_FLAGS="--no-sandbox --disable-gpu --disable-software-rasterizer"
 
+RUN git clone --depth 1 https://github.com/novnc/noVNC.git /opt/novnc && \
+    git clone --depth 1 https://github.com/novnc/websockify /opt/novnc/utils/websockify
+
 WORKDIR /app
 COPY . /app/
 
-RUN sed -i 's/\r$//' /app/start.sh
-RUN chmod +x /app/start.sh
+RUN sed -i 's/\r$//' /app/start.sh && chmod +x /app/start.sh
 
 RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
 
