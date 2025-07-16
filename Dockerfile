@@ -20,4 +20,4 @@ COPY . /app
 
 RUN pip install --no-cache-dir PySide6[webengine] markdown2
 
-CMD ["python", "main.py"]
+CMD ["python", "app/main.py"]
