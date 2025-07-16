@@ -1,11 +1,12 @@
 version: "3.8"
 
 services:
-  tequill-app:
-    image: boykowealth/tequilla:latest
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_QPA_PLATFORM=xcb
+  tequill:
+    build: .
+    ports:
+      - "6080:80"
+      - "5901:5901"
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    network_mode: "host"
+      - .:/app
+    environment:
+      - DISPLAY=:1

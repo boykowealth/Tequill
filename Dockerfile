@@ -1,52 +1,11 @@
-FROM python:3.11-slim
-
-RUN apt-get update && apt-get install -y \
-    libgl1 \
-    libegl1 \
-    libfontconfig1 \
-    libx11-xcb1 \
-    libx11-dev \
-    libxcb1 \
-    libxcb-glx0 \
-    libxcb-keysyms1 \
-    libxcb-image0 \
-    libxcb-shm0 \
-    libxcb-icccm4 \
-    libxcb-sync1 \
-    libxcb-xfixes0 \
-    libxcb-shape0 \
-    libxcb-randr0 \
-    libxcb-render-util0 \
-    libxcb-xinerama0 \
-    libxrender1 \
-    libxext6 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    libnss3 \
-    libxshmfence1 \
-    libxfixes3 \
-    libxcursor1 \
-    libxi6 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libglib2.0-0 \
-    libcups2 \
-    libsm6 \
-    libxkbcommon0 \
-    wget \
-    x11-xserver-utils \
-    && rm -rf /var/lib/apt/lists/*
-
-
-ENV QT_QPA_PLATFORM=xcb
+FROM dorowu/ubuntu-desktop-lxde-vnc
 
 WORKDIR /app
 
-COPY app/ /app/
+COPY . /app
 
-RUN pip install --no-cache-dir PySide6[webengine] markdown2
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip \
+    && pip3 install PySide6[webengine] markdown2
 
-CMD ["python", "main.py"]
+CMD ["sh", "-c", "python3 /app/main.py"]
