@@ -19,7 +19,8 @@ class NotebookWidget(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Tequill")
-        self.showFullScreen()
+        self.resize(1920, 1080)
+        self.move(0, 0)
 
         self.manager = NotebookManager()
         self.current_session = None
